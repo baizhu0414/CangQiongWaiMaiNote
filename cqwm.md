@@ -55,11 +55,22 @@
     > - 设计阶段可以将接口设计文档导入yapi进行统一管理；
     > - 开发阶段有了Knife4j（Swagger）就可以辅助后端人员进行开发测试。
 
-3. 常用注解相关类
+## 常用知识介绍
+1. 常用注解相关类
     - @Data、@Builder、@NoArgsConstructor、@AllArgsConstructor：`Employee`
     - @Configuration、@Bean、@Slf4j：`WebMvcConfiguration`
     - @ConfigurationProperties：`JwtProperties`
     - @RestControllerAdvice vs @ControllerAdvice、@ExceptionHandler、@Controller vs @RestController、：`GlobalExceptionHandler`
+    - @Mapper：`EmployeeMapper`；分页查询结合pagehelper库更方便，使用了mybatis拦截器，这样后面分页查询的sql语句也不需要limit关键字了，拦截器会自动拼接语句。https://www.bilibili.com/list/watchlater/?spm_id_from=333.1007.view_later.pip&bvid=BV1TP411v7v6&oid=315565756&p=22
+    - 
 
-4. JWT认证流程
-   > 由于每次请求tomcat服务器都会单独分配一个线程，Interceptor、controller、service都在此线程中。因此可以考虑使用ThreadLocal保存用户Id（Interceptor中），然后再在service中取出来使用。`JwtTokenAdminInterceptor`、`BaseContext（ThreadLocal）`
+2. 请求参数接收方式
+   - @RequestBody：接收请求体中的 JSON/XML 等数据
+   - @RequestParam：Query 参数,URL 中?后的键值对，**直接用对象接受参数可行**。
+   - @PathVariable：接收 URL 路径中的动态参数（如: `@RequestMapping("/user/{id}/detail")`）
+   - @RequestHeader: 接收 HTTP 请求头中的参数
+   - 
+
+3. 小需求：
+   > 1. JWT认证流程：由于每次请求tomcat服务器都会单独分配一个线程，Interceptor、controller、service都在此线程中。因此可以考虑使用ThreadLocal保存用户Id（Interceptor中），然后再在service中取出来使用。`JwtTokenAdminInterceptor`、`BaseContext（ThreadLocal）`
+   > 2. 数据库存储LocalDateTime日期数据直接读取是数组对象，想要读出来之后保持日期格式，可以通过：1）`@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")`注解或者；2）SpringMvcConfig中扩展消息转换器`对象序列化和反序列化JacksonObjectMapper`。
