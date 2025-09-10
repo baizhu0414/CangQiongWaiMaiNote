@@ -289,7 +289,7 @@
 
 
 # SpringBoot框架
-> 减少很多配置内容，内置tomcat服务器。
+> 减少很多配置内容，内置tomcat服务器，免于打war包；spring-boot-starter较少了依赖冲突处理；很多默认配置，仅在自定义的时候才需要修改少量配置application.yml文件。
 > 2.x:jdk8; 3.x:jdk17.
 
 1. 配置：spring-boot-starter-parent、spring-boot-starter-web。

@@ -66,11 +66,47 @@
 
 2. 请求参数接收方式
    - @RequestBody：接收请求体中的 JSON/XML 等数据
-   - @RequestParam：Query 参数,URL 中?后的键值对，**直接用对象接受参数可行**。
-   - @PathVariable：接收 URL 路径中的动态参数（如: `@RequestMapping("/user/{id}/detail")`）
    - @RequestHeader: 接收 HTTP 请求头中的参数
+   - @RequestParam：Query 参数,**URL 中/app/msg?id=123后的键值对，直接用对象接受参数可行**。
+   - @PathVariable：接收 URL 路径中的动态参数（也叫Query请求，如: `@RequestMapping("/user/{id}/detail")`）
    - 
 
 3. 小需求：
    > 1. JWT认证流程：由于每次请求tomcat服务器都会单独分配一个线程，Interceptor、controller、service都在此线程中。因此可以考虑使用ThreadLocal保存用户Id（Interceptor中），然后再在service中取出来使用。`JwtTokenAdminInterceptor`、`BaseContext（ThreadLocal）`
    > 2. 数据库存储LocalDateTime日期数据直接读取是数组对象，想要读出来之后保持日期格式，可以通过：1）`@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")`注解或者；2）SpringMvcConfig中扩展消息转换器`对象序列化和反序列化JacksonObjectMapper`。
+   > 3. 定制化更新数据库参数的mybatis语句：
+    ```xml
+    <update id="update" parameterType="com.sky.entity.Employee"> // 参数类型Employee，自动转换。
+        update employee
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="username != null">username = #{username},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="sex != null">sex = #{sex},</if>
+            <if test="idNumber != null">id_Number = #{idNumber},</if>
+            <if test="updateTime != null">update_Time = #{updateTime},</if>
+            <if test="updateUser != null">update_User = #{updateUser},</if>
+            <if test="status != null">status =#{status},</if>
+        </set>
+        where id =#{id}
+    </update>
+    ```
+   > 4. 针对每次不同表的数据更新，都涉及一些更新时间、修改人等统一数据，使用AOP切面实现同意拦截和处理。
+   >    需要注意：insert需要修改创建人、创建时间、修改人、修改时间；update仅仅需要更新修改人、修改时间字段。
+   >    涉及枚举、AOP编程、注解、反射。
+
+4. AOP编程
+    1）自定义注解AutoFill；
+    2）定义切面类AutoFillAspect拦截注解的方法，通过反射给字段赋值；
+        - 定义：切入点、通知（@Aspect+ @Component）
+        - 切入点：
+            ```java
+                @Pointcut("execution(* com.sky.mapper.*.*(..)) && @annotation(com.sky.annotation.AutoFill)")
+                public void autoFillPointcut(){}
+            ```
+        - 通知分类：`@Before("autoFillPointcut()")`前置通知
+          - 内部包含反射获取参数（object）、函数（updatexxx）、注解的参数类型（insert|update）
+    3）在相应数据库Mapper类方法上添加AutoFill注解。
+
+进度：3-5
