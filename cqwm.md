@@ -149,16 +149,31 @@
 ## Redis使用介绍
 
 1. 入门
-    > 基于内存的key-val结构数据库。适合用于存储热点数据、提高读写性能。
+    > 基于内存的key-val结构数据库。适合用于存储热点数据、提高读写性能。提供 过期策略、事务、发布订阅、分布式锁 等。
     windows安装包下载地址（x64/zip）：https://github.com/microsoftarchive/redis/releases
 
     - 5种数据类型:字符串、哈希、列表、集合、有序集合、
     - 常用命令
     1. `redis-server.exe xxx.conf`
     2. `redis-cli.exe -h localhost -p 6379`
-    2. 数据类型相关命令
+    3. 数据类型相关命令
         - 字符串操作：SET key value/ GET key/ SETEX key seconds value/ SETNX key value(key不存在才设置，分布式锁)
+        - 哈希表操作：hset table field value/ hget table field/ hdel table field/ hkeys table/ hvals table；
+        - 列表操作：lpush list value1 [value2]/ lrange list start stop（闭包）/ rpop list/ llen list；
+        - 集合操作：sadd set member1 [member2]/ smembers set（所有成员）/ scard set（成员数）/ sinter set1 [set2] （交集）/ sunion set1 [set2](并集)/ srem set member1 [member2](删除)；
+        - 有序集合操作：zadd scoreL score1 member1 [score2 member2]/ zrange scoreL start stop [withscores]/ zincrby scoreL increment member(指定成员加分)/ zrem scoreL member [member2](删除)。
+    4. keys pattern(符合给定模式的所有key)/ exists key/ type key/ del key1 [key2]
     - Java操作Redis(交互)
+    1. 使用Spring Data Redis操作redis，maven坐标是：spring-boot-starter-data-redis;
+    2. 配置：
+    ```xml
+    spring:
+      redis:
+        host:
+        port:
+        password:
+    ```
+    3. 编写配置类RedisTemplate
     - 小需求开发（店铺营业状态设置）
 
-进度：5-5
+进度5-11
