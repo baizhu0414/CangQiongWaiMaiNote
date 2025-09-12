@@ -125,25 +125,40 @@
             </foreach>
         ```
     3）子需求：菜品信息查询（多表查询出现重复字段需要起别名，保证结果字段名称和封装类名称对应），此处：// 匹配返回值DishVO中的字段名称name和category_name
-        ```xml
-        select d.*, c.name as category_name
-        from dish d 
-        left outer join category c on d.category_id = c.id
-        <where>
-        <if test="name != null">
-            and d.name like concat('%', #{name}, '%')
-        </if>
-        <if test="categoryId != null">
-            and d.category_id = #{categoryId}
-        </if>
-        <if test="status != null">
-            and d.status = #{status}
-        </if>
-        </where>
-        order by d.create_time desc
 
-        ```
+    ```xml
+    select d.*, c.name as category_name
+    from dish d 
+    left outer join category c on d.category_id = c.id
+    <where>
+    <if test="name != null">
+        and d.name like concat('%', #{name}, '%')
+    </if>
+    <if test="categoryId != null">
+        and d.category_id = #{categoryId}
+    </if>
+    <if test="status != null">
+        and d.status = #{status}
+    </if>
+    </where>
+    order by d.create_time desc
+
+    ```
 
 
+## Redis使用介绍
 
+1. 入门
+    > 基于内存的key-val结构数据库。适合用于存储热点数据、提高读写性能。
+    windows安装包下载地址（x64/zip）：https://github.com/microsoftarchive/redis/releases
 
+    - 5种数据类型:字符串、哈希、列表、集合、有序集合、
+    - 常用命令
+    1. `redis-server.exe xxx.conf`
+    2. `redis-cli.exe -h localhost -p 6379`
+    2. 数据类型相关命令
+        - 字符串操作：SET key value/ GET key/ SETEX key seconds value/ SETNX key value(key不存在才设置，分布式锁)
+    - Java操作Redis(交互)
+    - 小需求开发（店铺营业状态设置）
+
+进度：5-5
