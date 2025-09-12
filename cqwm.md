@@ -20,7 +20,7 @@
     - 原因：postman构造参数效率低
     - Knife4j封装了Swagger生成Api文档的解决方案。配置类**class WebMvcConfiguration extends WebMvcConfigurationSupport**。
     - 通过 Docket 对象配置 Swagger/Knife4j 接口文档
-      ```java
+    
         一、Swagger/Knife4j 接口文档配置（docket 方法）
         1. 自定义 API 文档元信息（ApiInfo），也就是文档首页信息。
         2. 控制接口扫描范围（apis 和 paths）
@@ -34,14 +34,15 @@
         6. 视图控制器（简化页面跳转配置）:无需通过 Controller 即可直接映射路径到页面.
 
         四、其他概念
-        1. '@Configuration' 注解是 Spring 框架的核心注解之一，用于标识一个类为 配置类，其主要作用是 声明 Spring 应用上下文的配置信息，包括定义 Bean、注册组件、配置依赖关系等。被 @Configuration 标记的类中，可使用 @Bean 注解定义方法，这些方法的返回值会被 Spring 注册为容器中的 Bean。
+        1. '@Configuration' 注解是 Spring 框架的核心注解之一，用于标识一个类为 配置类，其主要作用是 声明 Spring 应用上下文的配置信息，包括定义 Bean、注册组件、配置依赖关系等。`被 @Configuration 标记的类中，可使用 @Bean 注解定义方法，这些方法的返回值会被 Spring 注册为容器中的 Bean。`
+           - `@ConfigurationProperties`可以用于配置参数的获取AliOssProperties，然后通过@Configuration+@Bean返回配置参数工具类。配合`@ConditionalOnMissingBean`获取配置相关的实例类比如AliOssUtil。
         2. 在java中，继承：
         * 关于 private 方法：不可继承，更无法重写。
         * 关于 protected 方法：可继承，可重写。
         * 关于 static 方法：不可重写，但可“隐藏”.静态方法不支持多态，按声明类型 Parent 调用.
-        3. Entity（实体类）：数据库表映射；DTO（Data Transfer Object：数据传输对象）：接口入参/层间数据传递；VO（Value Object：值对象）：后端→前端的数据响应，封装前端视图所需的数据。
+        1. Entity（实体类）：数据库表映射；DTO（Data Transfer Object：数据传输对象）：接口入参/层间数据传递；VO（Value Object：值对象）：后端→前端的数据响应，封装前端视图所需的数据。
       
-      ```
+    
 
     - 常用注解
 
@@ -74,6 +75,7 @@
 3. 小需求：
    > 1. JWT认证流程：由于每次请求tomcat服务器都会单独分配一个线程，Interceptor、controller、service都在此线程中。因此可以考虑使用ThreadLocal保存用户Id（Interceptor中），然后再在service中取出来使用。`JwtTokenAdminInterceptor`、`BaseContext（ThreadLocal）`
    > 2. 数据库存储LocalDateTime日期数据直接读取是数组对象，想要读出来之后保持日期格式，可以通过：1）`@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")`注解或者；2）SpringMvcConfig中扩展消息转换器`对象序列化和反序列化JacksonObjectMapper`。
+   ---
    > 3. 定制化更新数据库参数的mybatis语句：
     ```xml
     <update id="update" parameterType="com.sky.entity.Employee"> // 参数类型Employee，自动转换。
@@ -92,7 +94,8 @@
         where id =#{id}
     </update>
     ```
-   > 4. 针对每次不同表的数据更新，都涉及一些更新时间、修改人等统一数据，使用AOP切面实现同意拦截和处理。
+    ---
+   > 4. 针对每次不同表的数据更新，都涉及一些更新时间、修改人等统一数据，使用AOP切面实统一意拦截和处理。
    >    需要注意：insert需要修改创建人、创建时间、修改人、修改时间；update仅仅需要更新修改人、修改时间字段。
    >    涉及枚举、AOP编程、注解、反射。
 
@@ -109,4 +112,7 @@
           - 内部包含反射获取参数（object）、函数（updatexxx）、注解的参数类型（insert|update）
     3）在相应数据库Mapper类方法上添加AutoFill注解。
 
-进度：3-5
+5. 小需求：新增菜品
+    1) 文件上传，返回服务器地址： @RequestMapping可以用于注解方法，但是@PostMapping只能用于注解方法。
+        > MultipartFile 的坑点主要集中在：大小限制（Spring+Nginx）、临时存储(文件不能重复读取)、文件名中文编码（上传charset+URLEncoder设置charset）、name与RequestParam对齐、服务器配置（跨域需要后端配置或者CDN代理）和安全性（MIME+文件大小+`UUID命名防止文件名冲突`）。
+    2) 数据库操作：同时操作两个数据库，菜品和口味，`@Transactional`注解。前提：已经在Application中开启注解`@EnableTransactionManagement`.
