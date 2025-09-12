@@ -56,19 +56,21 @@
     > - 设计阶段可以将接口设计文档导入yapi进行统一管理；
     > - 开发阶段有了Knife4j（Swagger）就可以辅助后端人员进行开发测试。
 
-## 常用知识介绍
+## 常用知识介绍(SpringBoot/MyBatis)
+
 1. 常用注解相关类
     - @Data、@Builder、@NoArgsConstructor、@AllArgsConstructor：`Employee`
     - @Configuration、@Bean、@Slf4j：`WebMvcConfiguration`
     - @ConfigurationProperties：`JwtProperties`
     - @RestControllerAdvice vs @ControllerAdvice、@ExceptionHandler、@Controller vs @RestController、：`GlobalExceptionHandler`
-    - @Mapper：`EmployeeMapper`；分页查询结合pagehelper库更方便，使用了mybatis拦截器，这样后面分页查询的sql语句也不需要limit关键字了，拦截器会自动拼接语句。https://www.bilibili.com/list/watchlater/?spm_id_from=333.1007.view_later.pip&bvid=BV1TP411v7v6&oid=315565756&p=22
+    - @Mapper：`EmployeeMapper`；
+        - 分页查询结合PageHelper库更方便，PageHelper会让下一个查询返回的List自动被Page对象代理，原理是使用了mybatis拦截器，这样后面分页查询的sql语句也不需要limit关键字了，拦截器会自动拼接语句。https://www.bilibili.com/list/watchlater/?spm_id_from=333.1007.view_later.pip&bvid=BV1TP411v7v6&oid=315565756&p=22
     - 
 
 2. 请求参数接收方式
    - @RequestBody：接收请求体中的 JSON/XML 等数据
    - @RequestHeader: 接收 HTTP 请求头中的参数
-   - @RequestParam：Query 参数,**URL 中/app/msg?id=123后的键值对，直接用对象接受参数可行**。
+   - @RequestParam或直接获取：Query 参数,**URL 中/app/msg?id=123后的键值对，直接用对象接受参数可行**。如果是字符串，能够自动解析:'1,2,3' -> 'List<Long>'
    - @PathVariable：接收 URL 路径中的动态参数（也叫Query请求，如: `@RequestMapping("/user/{id}/detail")`）
    - 
 
@@ -116,3 +118,32 @@
     1) 文件上传，返回服务器地址： @RequestMapping可以用于注解方法，但是@PostMapping只能用于注解方法。
         > MultipartFile 的坑点主要集中在：大小限制（Spring+Nginx）、临时存储(文件不能重复读取)、文件名中文编码（上传charset+URLEncoder设置charset）、name与RequestParam对齐、服务器配置（跨域需要后端配置或者CDN代理）和安全性（MIME+文件大小+`UUID命名防止文件名冲突`）。
     2) 数据库操作：同时操作两个数据库，菜品和口味，`@Transactional`注解。前提：已经在Application中开启注解`@EnableTransactionManagement`.
+        - 批量插入数据库数据：
+        ```xml
+            <foreach collection="users" item="user" separator=",">
+                (#{user.name}, #{user.age}, #{user.email})
+            </foreach>
+        ```
+    3）子需求：菜品信息查询（多表查询出现重复字段需要起别名，保证结果字段名称和封装类名称对应），此处：// 匹配返回值DishVO中的字段名称name和category_name
+        ```xml
+        select d.*, c.name as category_name
+        from dish d 
+        left outer join category c on d.category_id = c.id
+        <where>
+        <if test="name != null">
+            and d.name like concat('%', #{name}, '%')
+        </if>
+        <if test="categoryId != null">
+            and d.category_id = #{categoryId}
+        </if>
+        <if test="status != null">
+            and d.status = #{status}
+        </if>
+        </where>
+        order by d.create_time desc
+
+        ```
+
+
+
+
