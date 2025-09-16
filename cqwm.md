@@ -18,25 +18,26 @@
 
 2. 接口测试方式：Swagger
     - 原因：postman构造参数效率低
-    - Knife4j封装了Swagger生成Api文档的解决方案。配置类**class WebMvcConfiguration extends WebMvcConfigurationSupport**。
+    - `Knife4j封装了Swagger`生成Api文档的解决方案。配置类**class WebMvcConfiguration extends WebMvcConfigurationSupport**。
     - 通过 Docket 对象配置 Swagger/Knife4j 接口文档
     
-        一、Swagger/Knife4j 接口文档配置（docket 方法）
+        一、Swagger/Knife4j 接口文档配置（定义Bean方法返回Docket）
         1. 自定义 API 文档元信息（ApiInfo），也就是文档首页信息。
         2. 控制接口扫描范围（apis 和 paths）
-        3. 高级配置（如接口鉴权、全局参数）：可通过 Docket 添加全局请求头（如 Token 认证）、设置文档开关（生产环境关闭）等。
+        3. groupName+定义多个Docket函数扫描admin和user文件目录，从而区分用户端和商户端
+        4. 高级配置（如接口鉴权、全局参数）：可通过 Docket 添加全局请求头（如 Token 认证）、设置文档开关（生产环境关闭）等。
 
         二、静态资源映射（addResourceHandlers 方法）
 
         三、WebMvcConfigurationSupport可扩展功能
-        4. 跨域配置（解决前后端分离跨域问题）
-        5. 消息转换器（自定义 JSON 序列化/反序列化）
-        6. 视图控制器（简化页面跳转配置）:无需通过 Controller 即可直接映射路径到页面.
+        5. 跨域配置（解决前后端分离跨域问题）
+        6. 消息转换器（自定义 JSON 序列化/反序列化）
+        7. 视图控制器（简化页面跳转配置）:无需通过 Controller 即可直接映射路径到页面.
 
         四、其他概念
-        1. '@Configuration' 注解是 Spring 框架的核心注解之一，用于标识一个类为 配置类，其主要作用是 声明 Spring 应用上下文的配置信息，包括定义 Bean、注册组件、配置依赖关系等。`被 @Configuration 标记的类中，可使用 @Bean 注解定义方法，这些方法的返回值会被 Spring 注册为容器中的 Bean。`
+        8. '@Configuration' 注解是 Spring 框架的核心注解之一，用于标识一个类为 配置类，其主要作用是 声明 Spring 应用上下文的配置信息，包括定义 Bean、注册组件、配置依赖关系等。`被 @Configuration 标记的类中，可使用 @Bean 注解定义方法，这些方法的返回值会被 Spring 注册为容器中的 Bean。`
            - `@ConfigurationProperties`可以用于配置参数的获取AliOssProperties，然后通过@Configuration+@Bean返回配置参数工具类。配合`@ConditionalOnMissingBean`获取配置相关的实例类比如AliOssUtil。
-        2. 在java中，继承：
+        9. 在java中，继承：
         * 关于 private 方法：不可继承，更无法重写。
         * 关于 protected 方法：可继承，可重写。
         * 关于 static 方法：不可重写，但可“隐藏”.静态方法不支持多态，按声明类型 Parent 调用.
@@ -71,7 +72,7 @@
    - @RequestBody：接收请求体中的 JSON/XML 等数据
    - @RequestHeader: 接收 HTTP 请求头中的参数
    - @RequestParam或直接获取：Query 参数,**URL 中/app/msg?id=123后的键值对，直接用对象接受参数可行**。如果是字符串，能够自动解析:'1,2,3' -> 'List<Long>'
-   - @PathVariable：接收 URL 路径中的动态参数（也叫Query请求，如: `@RequestMapping("/user/{id}/detail")`）
+   - @PathVariable：接收 URL 路径中的动态参数（也叫Query请求，如: `@RequestMapping("/user/{id}/detail"), @PutMapping("/{status}")`）
    - 
 
 3. 小需求：
@@ -100,6 +101,8 @@
    > 4. 针对每次不同表的数据更新，都涉及一些更新时间、修改人等统一数据，使用AOP切面实统一意拦截和处理。
    >    需要注意：insert需要修改创建人、创建时间、修改人、修改时间；update仅仅需要更新修改人、修改时间字段。
    >    涉及枚举、AOP编程、注解、反射。
+   > 5. 想要操作insert产生的id，需要在Mapper.xml中这么写： `<insert id="insert" useGeneratedKeys="true" keyProperty="id">`
+   >    比如insert(user),那么插入后user.id会被设置为数据库新产生的id。
 
 4. AOP编程
     1）自定义注解AutoFill；
@@ -173,7 +176,12 @@
         port:
         password:
     ```
-    3. 编写配置类RedisTemplate
+    3. 编写配置类，Bean函数返回RedisTemplate（设置Key序列化，否则查询不到key）
     - 小需求开发（店铺营业状态设置）
+    - 如果用户user.ShopController和商家的admin.ShopController没有重命名则会发生Spring容器冲突(名称是shopController)。
+      可以通过@RestController("adminShopController").
 
-进度5-11
+## 微信登陆流程
+> 用户获取code，并发送到后端请求登录->后端携带code、appid等信息请求微信服务器->微信服务器返回openid等信息->后端储存用户信息包括openid，并生成JWT令牌->返回给前端->登陆成功
+
+7-2
