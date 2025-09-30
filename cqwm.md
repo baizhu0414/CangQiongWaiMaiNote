@@ -35,9 +35,10 @@
         7. 视图控制器（简化页面跳转配置）:无需通过 Controller 即可直接映射路径到页面.
 
         四、其他概念
-        8. '@Configuration' 注解是 Spring 框架的核心注解之一，用于标识一个类为 配置类，其主要作用是 声明 Spring 应用上下文的配置信息，包括定义 Bean、注册组件、配置依赖关系等。`被 @Configuration 标记的类中，可使用 @Bean 注解定义方法，这些方法的返回值会被 Spring 注册为容器中的 Bean。`
-           - `@ConfigurationProperties`可以用于配置参数的获取AliOssProperties，然后通过@Configuration+@Bean返回配置参数工具类。配合`@ConditionalOnMissingBean`获取配置相关的实例类比如AliOssUtil。
-        9. 在java中，继承：
+        1. '@Configuration' 注解是 Spring 框架的核心注解之一，用于标识一个类为 配置类，其主要作用是 声明 Spring 应用上下文的配置信息，包括定义 Bean、注册组件、配置依赖关系等。`被 @Configuration 标记的类中，可使用 @Bean 注解定义方法，这些方法的返回值会被 Spring 注册为容器中的 Bean。`
+           - `@ConfigurationProperties`可以用于配置参数的获取AliOssProperties，然后通过`@Configuration+@Bean`返回配置参数工具类。配合`@ConditionalOnMissingBean`获取配置相关的实例类比如AliOssUtil。
+           - `@Configuration+@Bean`配置RedisConfiguration, 返回RedisTemplate。
+        2. 在java中，继承：
         * 关于 private 方法：不可继承，更无法重写。
         * 关于 protected 方法：可继承，可重写。
         * 关于 static 方法：不可重写，但可“隐藏”.静态方法不支持多态，按声明类型 Parent 调用.
@@ -175,6 +176,7 @@
         host:
         port:
         password:
+        database:
     ```
     3. 编写配置类，Bean函数返回RedisTemplate（设置Key序列化，否则查询不到key）
     - 小需求开发（店铺营业状态设置）
