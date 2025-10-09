@@ -25,7 +25,7 @@
         - release savepoint identifier删除一个事务的保存点；
         - ROLLBACK TO savepoint identifier回滚到某个保存点。
     - commit：COMMIT是事务成功完成的标志，该事务对数据库所做的所有更改就会被持久化，一个已经结束的事务不能再被回滚。
-    - 注意：MySQL中默认自动提交，使用begin/start transaction显示开启事务则自动提交暂时禁用，知道手动commit/rollback.
+    - 注意：MySQL中默认自动提交，使用begin/start transaction显示开启事务则自动提交暂时禁用，直到手动commit/rollback.
     
 - 触发事件有哪些？
     - 触发器分类：
@@ -142,7 +142,7 @@
     - WHERE：过滤‘行’，不允许聚合函数使用
     - GROUP BY：分组
         ```sql
-        <!-- select中只允许group by中字段或者聚合函数。否则你想查name会产生一组中多个值，从而发生歧义。 -->
+        <!-- select中只允许出现 group by中字段或者聚合函数。否则你想查name会产生一组中多个值，从而发生歧义。 -->
         SELECT dept, COUNT(*) AS employee_count
         FROM employees
         GROUP BY dept;
