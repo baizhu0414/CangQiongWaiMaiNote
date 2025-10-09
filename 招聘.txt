@@ -1,34 +1,44 @@
 准备笔试（如行测、计算机专业知识）和面试（技术面 + 业务面）
 
 央国企：
-PICC保险业：https://picc.zhiye.com/custom/xzkj?hideAll=true  2025年10月 投递日期：25.9.15 投递查看：https://picc.zhiye.com/personal/deliveryRecord
+PICC保险业：https://picc.zhiye.com/custom/xzkj?hideAll=true  2025年10月 
+    - 投递日期：25.9.15 投递查看：https://picc.zhiye.com/personal/deliveryRecord
 银行（由低到高）：
 工资低：
-中国银行、2025年10月10日24点  中国银行初步定于9月下旬至10月下旬分批组织统一笔试  https://campus.chinahr.com/pages/2026-boc HF 简历编号为：325090
-交通银行、2025年10月12日      https://job.bankcomm.com/index.do#/school/recruitmentInfo/?positionId=37345
-徽商银行（https://rczp.hsbank.com.cn/pc/#/center） 2025-10-10截至 HF 投递日期：9.16
+中国银行、2025年10月10日24点  中国银行初步定于9月下旬至10月下旬分批组织统一笔试  https://campus.chinahr.com/pages/2026-boc HF 
+    - 简历编号为：325090
+交通银行、2025年10月12日      https://job.bankcomm.com/index.do#/school/recruitmentInfo/?positionId=37345 
+    - 投递日期：9.17 投递查看：https://job.bankcomm.com/index.do#/personal/record
+徽商银行（https://rczp.hsbank.com.cn/pc/#/center） 2025-10-10截至 HF 
+    - 投递日期：9.16 投递查看：https://rczp.hsbank.com.cn/pc/#/center
 股份制：
     招银网络科技 2025-09-25 截止 https://cmbnt.cmbchina.com/pages/schoolRecruit/index.html
+        - 投递日期：9.17 投递查看：https://cmbntjob.cmbchina.com/center/history
     中信银行 2025年10月10日 https://job.citicbank.com完善简历 https://job.citicbank.com/static/positionDetail_4171_02.html投递
+        - 投递日期：9.17 投递查看：https://job.citicbank.com/#
     光大银行
+    浦发银行：投递日期：9.24 投递查看 https://job.spdb.com.cn/mySchoolVolunteer
 国有：
     邮储银行、2025年9月30日24点 https://psbc2026.zhaopin.com/jobs/index.html?id=10082472
+        - 投递日期：9.17
     工商银行、10月9日 https://job.icbc.com.cn/pc/index.html#/main/school/home/post
+        - 投递日期：9.17 查看：https://job.icbc.com.cn/pc/index.html#/main/personal/delivery
     农业银行 2025年10月9日24时  https://career.abchina.com.cn/build/index.html#/99
+        - 投递日期：9.17 查看：https://career.abchina.com.cn/build/index.html#/MySubmit
 
 建设银行 2025年10月10日24点 https://job3.ccb.com/cn/job/job_detail.html?planId=2025090215596096&planPost=20250902164932664972&planType=XY&orgId=2041560&secondOrgId=2046410&
-
+    - 投递日期：9.17 查看：https://job3.ccb.com/cn/job/mycenter/apply.html?planType=XY&orgId=2041560
 中国移动
+    - 投递日期：9.17 查看：https://ah.10086.cn/zhaopin/index.html?appid=mapplications
 中国电信
-
-【百度】同学你好~ 百度2026校园招聘已经启动，诚挚邀请你关注并投递，登陆百度校招官网，查看职位并完成投递。填入专属内推码：ISBP32，快来get内推绿色通道~百度校招组
+    - 投递日期：9.17 查看：https://job.chinatelecom.com.cn/wt/TELE/web/index?brandCode=1#/individualcenter
 
 
 腾讯音乐-技术大咖，要博士。和腾讯的投递不冲突、独立招聘
-官网投递：join.tencentmusic.com/campus/post/?type=40
-内推码：DSBCNVWY
-滴滴-提前批
-【内推链接】https://app.mokahr.com/m/campus_apply/didiglobal/96064?recommendCode=DSesWXtH&hash=%23%2Fjobs
-【内推码】DSesWXtH
+    - https://join.tencentmusic.com/deliver
 
 【腾讯文档】26届实习&校招信息汇总（持续更新） https://docs.qq.com/sheet/DZlRLZlJETm9WQlpk?tab=BB08J2
+
+比亚迪：https://job.byd.com/portal/pc/#/personalCenter/myApply
+
+TCL实业：https://wecruit.hotjob.cn/SU64893571bef57c16d356b99e/pb/account.html#/myDeliver
